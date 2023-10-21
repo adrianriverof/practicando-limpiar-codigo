@@ -52,25 +52,9 @@ var line_width = 4
 
 
 
-
-
-
-
-func generate_random_number(number):  #1dN    N = number  
-	#ESTO TE DEVUELVE UN NÚMERO ALEATORIO ENTRE 1 Y EL NÚMERO QUE LE METAS
-	
-	
-	var randnumber
-	
-	var maxnum = number
-	
-	#MAYBE CHANGING THIS DIRECTION SHOULD ONLY CONSIDER THE 4 ADJACENT DIRECTIONS
-	randomize()     # We need one of 8 directions
-	randnumber = (randi() % maxnum + 1) + 0   # Returns random integer between 1 and number
-	
-	return randnumber
-
-
+func numero_aleatorio_entre_uno_y(numero_maximo):
+	randomize()       
+	return ((randi() % numero_maximo + 1) + 0 )
 
 
 func _ready():
