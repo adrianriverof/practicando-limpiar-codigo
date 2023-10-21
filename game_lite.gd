@@ -1,8 +1,7 @@
 extends Node2D
 
 
-#onready var menu_pause = get_node("camera_object/menus/pause")
-#onready var menu_start = get_node("camera_object/menus/start")
+
 onready var menu_pause = get_node("animated_camera/menus/pause")
 onready var menu_start = get_node("animated_camera/menus/start")
 
@@ -10,7 +9,7 @@ onready var brillos = preload("res://particulas/brillitos4.tscn")
 onready var brillos_tocar_fugaz = preload("res://particulas/brillitos6.tscn")
 
 var selecting = false
-var trazando_conexiones = false # ya tiene alguna trazada temporal
+var trazando_conexiones = false 
 var buscando_puntos = false
 
 var punto_inicial_marcado = Vector2.ZERO
@@ -34,14 +33,12 @@ var conexiones_a_permanente = []
 
 var grupos_encontrados = []
 
-var paused_game = true
 var game_started = false
+var paused_game = true
 var view_mode = false
 
 
-# Colores
 
-#grupo_objetivo = int(str(conexiones_temporales[-1][0]).left(2))
 var color_blanco = "cdd6e7"
 var color_azul_1 = "327bb3"
 var color_azul_2 = "00487f"
