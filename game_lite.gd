@@ -52,9 +52,9 @@ var line_width = 4
 
 
 
-func numero_aleatorio_entre_uno_y(numero_maximo):
+func numero_aleatorio_entre_uno_y(numero_maximo_inclusivo):
 	randomize()       
-	return ((randi() % numero_maximo + 1) + 0 )
+	return ((randi() % numero_maximo_inclusivo + 1))
 
 
 func _ready():
@@ -65,6 +65,11 @@ func _input(event):
 	if Input.is_action_just_pressed("esc") and game_has_started:
 		toggle_game_pause()
 
+func toggle_game_pause():
+	if menu_pause.is_visible_in_tree():
+		pause_game()
+	else:
+		continue_playing()
 
 func close_menu_and_start():
 	
@@ -75,14 +80,6 @@ func close_menu_and_start():
 	game_has_started = true
 	paused_game = false
 	
-
-func toggle_game_pause():
-
-	if menu_pause.is_visible_in_tree():
-		pause_game()
-
-	else:
-		continue_playing()
 
 
 
@@ -113,51 +110,26 @@ func grupo_encontrado(conexiones_encontradas):
 	
 	$card_down.play(str(grupo_objetivo))
 	
-	hacer_lineas_permanentes_arreglado()
+	borrar_lineas_temporales_y_reiniciar_fugaz()
 	dibujar_lineas_encontradas(conexiones_encontradas)
 	comprobar_objetivos()
 	
 	GlobalSound.group_found()
 
 
-func lanzar_brillitos_mouse():
-	
-	
-	var posicion_deseada = get_global_mouse_position()
-	
-	
-	
+func lanzar_brillitos_en(posicion):
+
 	var brillos_instance = brillos.instance()
-	brillos_instance.position = posicion_deseada
-	brillos_instance.emitting = true
-	
-	get_tree().get_root().add_child(brillos_instance)
-	
-func lanzar_brillitos(posicion):
-	
-	
-	var posicion_deseada = posicion
-	
-	
-	
-	var brillos_instance = brillos.instance()
-	brillos_instance.position = posicion_deseada
+	brillos_instance.position = posicion
 	brillos_instance.emitting = true
 	
 	get_tree().get_root().add_child(brillos_instance)
 	
 
-func lanzar_brillitos_fugaz(posicion):
-	
-
-	
-	var posicion_deseada = posicion
-	
-	
+func lanzar_brillitos_en_fugaz(posicion):
 	
 	var brillos_instance = brillos_tocar_fugaz.instance()
-	brillos_instance.position = posicion_deseada
-	
+	brillos_instance.position = posicion
 	
 	get_tree().get_root().add_child(brillos_instance)
 	
@@ -166,30 +138,30 @@ func lanzar_brillitos_fugaz(posicion):
 
 func dibujar_linea(punto_fin):
 	
-	
-	lanzar_brillitos_mouse()
-	
-	
+	lanzar_brillitos_en(get_global_mouse_position())
 	
 	var linea = Line2D.new()
-	linea.default_color = Color(color_marca)  # Cambia el color de la línea según tus preferencias
-	linea.width = line_width  # Cambia el grosor de la línea según tus preferencias
+	linea.default_color = Color(color_marca)
+	linea.width = line_width 
 	linea.points = [punto_inicial_marcado, punto_fin]
 	add_child(linea)
-	lineas_temporales.append(linea)  # Almacena la línea en la lista
-	
-	
-	# ahora quiero que me guarde información de los node_number de los puntos conectados
-	
-	
-	if nodo_inicial_temporal < nodo_final_temporal:   # con esto los ordeno siempre menor primero
-		conexiones_temporales.append(Vector2(nodo_inicial_temporal, nodo_final_temporal))
-	else:
-		conexiones_temporales.append(Vector2(nodo_final_temporal, nodo_inicial_temporal))
-	
+	lineas_temporales.append(linea)
+
+	conexiones_temporales.append(ordenar_menor_a_mayor(nodo_inicial_temporal,nodo_final_temporal))
 	comprobar_conexiones()
+
+
+func ordenar_menor_a_mayor(primero,segundo):
+
+	if primero < segundo: 
+		return Vector2(primero,segundo)
+	else:
+		return Vector2(segundo,primero)
 	
-	
+
+
+
+
 func dibujar_lineas_encontradas(conexiones):
 	
 
@@ -198,14 +170,11 @@ func dibujar_lineas_encontradas(conexiones):
 	
 	for vector in conexiones:
 		var linea = Line2D.new()
-		linea.default_color = Color(color_azul_2)  # Cambia el color de la línea según tus preferencias
-		linea.width = line_width  # Cambia el grosor de la línea según tus preferencias
+		linea.default_color = Color(color_azul_2)
+		linea.width = line_width 
 		
-		var primerElemento = vector[0]
-		var segundoElemento = vector[1]
-		
-		var primeraPosicion = posiciones_estrellas[int(primerElemento)]
-		var segundaPosicion = posiciones_estrellas[int(segundoElemento)]
+		var primeraPosicion = posiciones_estrellas[int(vector[0])]
+		var segundaPosicion = posiciones_estrellas[int(vector[1])]
 		
 		
 		if !posiciones_a_brillar.has(primeraPosicion):
@@ -215,35 +184,16 @@ func dibujar_lineas_encontradas(conexiones):
 		
 		linea.points = [primeraPosicion, segundaPosicion]
 		add_child(linea)
-		lineas_permanentes.append(linea)  # Almacena la línea en la lista
+		lineas_permanentes.append(linea)
 		
 	
 	for posicion in posiciones_a_brillar:
-		lanzar_brillitos(posicion)
+		lanzar_brillitos_en(posicion)
 
 
-func hacer_lineas_permanentes_arreglado():
-		
+func borrar_lineas_temporales_y_reiniciar_fugaz():
+	
 	$fugaz_timer.start()
-	borrar_lineas_temporales()
-	
-	
-
-func hacer_lineas_permanentes():
-	
-	
-	for linea_num in len(conexiones_temporales):
-		var linea = lineas_temporales[0]
-		lineas_temporales.remove(0)
-		lineas_permanentes.append(linea)
-		linea.default_color = Color(0,1,0)
-		
-	borrar_lineas_temporales()
-	
-	
-
-
-func borrar_lineas_temporales():
 	
 	for linea in lineas_temporales:
 		linea.queue_free()
@@ -251,22 +201,19 @@ func borrar_lineas_temporales():
 	conexiones_temporales.clear()
 
 
-func comprobar_conexiones():
-	# Define tu lista de vectores objetivo
-	
+func comprobar_conexiones():	
 	
 	grupo_objetivo = int(str(conexiones_temporales[-1][0]).left(2))
 	
 	var conexiones_buscadas = []
 	match grupo_objetivo:
-		
-		#10:
-		#	este grupo es genérico, no da información
-		
-		#---------
+
+
 		11:
 			# PUEDO HACER UN SISTEMA AUTOMÁTICO PARA METER ESTOS VECTORES
-			conexiones_buscadas = [  # Esta es la lista de conexiones de la constelación
+			# Habria que gestionarlo desde un dataset separado, despejaría 130 líneas
+
+			conexiones_buscadas = [  
 			Vector2(1101, 1102),
 			Vector2(1101, 1103),
 			Vector2(1102, 1103),
@@ -274,7 +221,7 @@ func comprobar_conexiones():
 			Vector2(1104, 1105),
 		]
 		12:
-			conexiones_buscadas = [  # Esta es la lista de conexiones de la constelación
+			conexiones_buscadas = [ 
 			Vector2(1201, 1202),
 			Vector2(1201, 1204),
 			Vector2(1202, 1203),
@@ -284,7 +231,7 @@ func comprobar_conexiones():
 			
 		]
 		13:
-			conexiones_buscadas = [  # Esta es la lista de conexiones de la constelación
+			conexiones_buscadas = [  
 			Vector2(1301, 1302),
 			Vector2(1302, 1303),
 			Vector2(1303, 1304),
@@ -293,7 +240,7 @@ func comprobar_conexiones():
 			
 		]
 		14:
-			conexiones_buscadas = [  # Esta es la lista de conexiones de la constelación
+			conexiones_buscadas = [ 
 			Vector2(140, 140),
 			Vector2(1302, 1303),
 			Vector2(1303, 1304),
@@ -397,14 +344,13 @@ func comprobar_conexiones():
 	if grupos_encontrados.has(grupo_objetivo):
 		conexiones_buscadas = []    # para que no nos la vuelva a marcar como completa
 	
-	if len(conexiones_buscadas) != 0 and comprobarListas_nos_da_igual_sobrar(conexiones_temporales, conexiones_buscadas):
+	if len(conexiones_buscadas) != 0 and verificar_lista_temporal_contiene_todos_los_vectores(conexiones_temporales, conexiones_buscadas):
 		grupo_encontrado(conexiones_buscadas)
 		
 	
 
 
-func comprobarListas_nos_da_igual_sobrar(temporal: Array, objetivo: Array) -> bool:
-	# Verificar que la lista temporal contiene al menos un vector de cada tipo en objetivo
+func verificar_lista_temporal_contiene_todos_los_vectores(temporal: Array, objetivo: Array) -> bool:
 	for vector_objetivo in objetivo:
 		var contiene_vector = false
 		for vector_temporal in temporal:
@@ -414,38 +360,11 @@ func comprobarListas_nos_da_igual_sobrar(temporal: Array, objetivo: Array) -> bo
 				break
 		if not contiene_vector:
 			return false
-
-	return true
-
-func comprobarListas(temporal: Array, objetivo: Array) -> bool:
-	
-	# Verificar que la lista temporal contiene al menos un vector de cada tipo en objetivo
-	for vector_objetivo in objetivo:
-		var contiene_vector = false
-		for vector_temporal in temporal:
-			if vector_temporal == vector_objetivo:
-				contiene_vector = true
-				break
-		if not contiene_vector:
-			return false
-
-	# Verificar que la lista temporal no contiene ningún vector que no esté en objetivo
-	for vector_temporal in temporal:
-		var esta_en_objetivo = false
-		for vector_objetivo in objetivo:
-			if vector_temporal == vector_objetivo:
-				esta_en_objetivo = true
-				break
-		if not esta_en_objetivo:
-			return false
-
-	# Si llegamos hasta aquí, todas las comprobaciones han pasado
 	return true
 
 
 func comprobar_objetivos():
-	
-	match len(grupos_encontrados): # nos fijamos en la cantidad que hemos completado
+	match len(grupos_encontrados): 
 		1:
 			$camera_animation.play("2")
 		3:
@@ -453,13 +372,8 @@ func comprobar_objetivos():
 		6:
 			$camera_animation.play("4")
 		10:
-			terminar()
-			
-		
+			$camera_animation.play("5")
 
-func terminar():
-	$camera_animation.play("5")
-	
 
 func reiniciar_escena():
 	$fugaz_timer.stop()
@@ -481,7 +395,6 @@ func _on_Button_close_button_down():
 	cerrar_juego()
 
 func cerrar_juego():
-	# Verifica la plataforma actual
 	get_tree().quit()
 
 
@@ -506,14 +419,13 @@ func generar_estrella_fugaz():
 		
 	var fugaz = preload("res://estrella_fugaz.tscn")
 	var camera_position = get_node("animated_camera/fugaces_posiciones")
-	var fugaz_especifica = generate_random_number(camera_position.get_child_count()) # numero de 1 al 10
+	var fugaz_especifica = numero_aleatorio_entre_uno_y(camera_position.get_child_count())
+
 	var fugaz_instance = fugaz.instance()
 	fugaz_instance.position = camera_position.get_node(str(fugaz_especifica)).global_position
 	fugaz_instance.rotation_degrees = camera_position.get_node(str(fugaz_especifica)).rotation_degrees
 	
 	get_tree().get_root().add_child(fugaz_instance)
-	
-
 
 
 func _on_Button_toggled(button_pressed):
@@ -548,7 +460,7 @@ func tocar_fugaz():
 		var grupo_de_la_estrella = int(str(numero_estrella).left(2))
 		
 		if !grupos_encontrados.has(grupo_de_la_estrella) and !grupo_de_la_estrella == 10:
-			lanzar_brillitos_fugaz(posiciones_estrellas[numero_estrella])
+			lanzar_brillitos_en_fugaz(posiciones_estrellas[numero_estrella])
 			break
 		 
 	
