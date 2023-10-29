@@ -162,9 +162,10 @@ func dibujar_lineas_encontradas(conexiones):
 	var posiciones_a_brillar = []
 	
 	
+
 	for conexion in conexiones:
 		
-		obtener_posiciones_de_las_estrellas_en_esta_conexion(conexion)
+		primeraPosicion, segundaPosicion = obtener_posiciones_de_las_estrellas_en_esta_conexion(conexion)
 		
 		meter_en_lista_si_no_lo_esta_ya(primeraPosicion, posiciones_a_brillar)
 		meter_en_lista_si_no_lo_esta_ya(segundaPosicion, posiciones_a_brillar)
@@ -173,12 +174,12 @@ func dibujar_lineas_encontradas(conexiones):
 
 		lineas_permanentes.append(linea)
 		
+	
 	for posicion in posiciones_a_brillar:
 		lanzar_brillitos_en(posicion)
 
 func obtener_posiciones_de_las_estrellas_en_esta_conexion():
-	var primeraPosicion = posiciones_estrellas[int(vector[0])]
-	var segundaPosicion = posiciones_estrellas[int(vector[1])]
+	return posiciones_estrellas[int(vector[0])], posiciones_estrellas[int(vector[1])]
 
 func meter_en_lista_si_no_lo_esta_ya(elemento, lista):
 	if !lista.has(elemento):
