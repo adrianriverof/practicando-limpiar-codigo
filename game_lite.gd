@@ -85,7 +85,6 @@ func pause_game():
 
 	menu_pause.set_visible(false)
 	paused_game = false
-
 	$fugaz_timer.start()
 	
 	pause_button_disabled_visible(false,true)
@@ -95,7 +94,6 @@ func continue_playing():
 
 	menu_pause.set_visible(true)
 	paused_game = true
-
 	$fugaz_timer.stop()
 
 	pause_button_disabled_visible(true,false)	
@@ -104,6 +102,8 @@ func pause_button_disabled_visible(is_disabled, is_visible):
 	$animated_camera/node/pause_button.disabled = is_disabled
 	$animated_camera/node/pause_button.visible = is_visible
 	
+
+
 func grupo_encontrado(conexiones_encontradas):
 	
 	grupos_encontrados.append(grupo_objetivo)
@@ -115,6 +115,7 @@ func grupo_encontrado(conexiones_encontradas):
 	comprobar_objetivos()
 	
 	GlobalSound.group_found()
+
 
 
 func lanzar_brillitos_en(posicion):
@@ -134,13 +135,10 @@ func lanzar_brillitos_en_fugaz(posicion):
 	get_tree().get_root().add_child(brillos_instance)
 	
 
-	
 
 func dibujar_linea(punto_fin):
 	
 	lanzar_brillitos_en(get_global_mouse_position())
-	
-
 	trazar_linea_desde_hasta_color(punto_inicial_marcado, punto_fin, Color(color_marca))
 
 	lineas_temporales.append(linea)
@@ -164,16 +162,12 @@ func dibujar_lineas_encontradas(conexiones):
 	var posiciones_a_brillar = []
 	
 	
-	for vector in conexiones:
+	for conexion in conexiones:
 		
-		var primeraPosicion = posiciones_estrellas[int(vector[0])]
-		var segundaPosicion = posiciones_estrellas[int(vector[1])]
+		obtener_posiciones_de_las_estrellas_en_esta_conexion(conexion)
 		
-		
-		if !posiciones_a_brillar.has(primeraPosicion):
-			posiciones_a_brillar.append(primeraPosicion)
-		if !posiciones_a_brillar.has(segundaPosicion):
-			posiciones_a_brillar.append(segundaPosicion)
+		meter_en_lista_si_no_lo_esta_ya(primeraPosicion, posiciones_a_brillar)
+		meter_en_lista_si_no_lo_esta_ya(segundaPosicion, posiciones_a_brillar)
 		
 		trazar_linea_desde_hasta_color(primeraPosicion,segundaPosicion,color_azul_2)
 
@@ -181,6 +175,14 @@ func dibujar_lineas_encontradas(conexiones):
 		
 	for posicion in posiciones_a_brillar:
 		lanzar_brillitos_en(posicion)
+
+func obtener_posiciones_de_las_estrellas_en_esta_conexion():
+	var primeraPosicion = posiciones_estrellas[int(vector[0])]
+	var segundaPosicion = posiciones_estrellas[int(vector[1])]
+
+func meter_en_lista_si_no_lo_esta_ya(elemento, lista):
+	if !lista.has(elemento):
+		lista.append(elemento)
 
 
 func trazar_linea_desde_hasta_color(start,end,color):
