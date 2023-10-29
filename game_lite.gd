@@ -160,9 +160,11 @@ func dibujar_lineas_encontradas(conexiones):
 	
 
 	var posiciones_a_brillar = []
-	
+	recorrer_conexiones_dibujando_lineas(conexiones)
+	lanzar_brillos_en_las_estrellas_de_la_constelacion_encontrada()
 	
 
+func recorrer_conexiones_dibujando_lineas():
 	for conexion in conexiones:
 		
 		primeraPosicion, segundaPosicion = obtener_posiciones_de_las_estrellas_en_esta_conexion(conexion)
@@ -175,8 +177,6 @@ func dibujar_lineas_encontradas(conexiones):
 		lineas_permanentes.append(linea)
 		
 	
-	for posicion in posiciones_a_brillar:
-		lanzar_brillitos_en(posicion)
 
 func obtener_posiciones_de_las_estrellas_en_esta_conexion():
 	return posiciones_estrellas[int(vector[0])], posiciones_estrellas[int(vector[1])]
@@ -184,6 +184,10 @@ func obtener_posiciones_de_las_estrellas_en_esta_conexion():
 func meter_en_lista_si_no_lo_esta_ya(elemento, lista):
 	if !lista.has(elemento):
 		lista.append(elemento)
+
+func lanzar_brillos_en_las_estrellas_de_la_constelacion_encontrada():
+	for posicion in posiciones_a_brillar:
+		lanzar_brillitos_en(posicion)
 
 
 func trazar_linea_desde_hasta_color(start,end,color):
