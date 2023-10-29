@@ -81,8 +81,6 @@ func close_menu_and_start():
 	paused_game = false
 	
 
-
-
 func pause_game():
 
 	menu_pause.set_visible(false)
@@ -140,14 +138,12 @@ func dibujar_linea(punto_fin):
 	
 	lanzar_brillitos_en(get_global_mouse_position())
 	
-	var linea = Line2D.new()
-	linea.default_color = Color(color_marca)
-	linea.width = line_width 
-	linea.points = [punto_inicial_marcado, punto_fin]
-	add_child(linea)
-	lineas_temporales.append(linea)
 
+	trazar_linea_desde_hasta_color(punto_inicial_marcado, punto_fin, Color(color_marca))
+
+	lineas_temporales.append(linea)
 	conexiones_temporales.append(ordenar_menor_a_mayor(nodo_inicial_temporal,nodo_final_temporal))
+	
 	comprobar_conexiones()
 
 
@@ -160,8 +156,6 @@ func ordenar_menor_a_mayor(primero,segundo):
 	
 
 
-
-
 func dibujar_lineas_encontradas(conexiones):
 	
 
@@ -169,9 +163,6 @@ func dibujar_lineas_encontradas(conexiones):
 	
 	
 	for vector in conexiones:
-		var linea = Line2D.new()
-		linea.default_color = Color(color_azul_2)
-		linea.width = line_width 
 		
 		var primeraPosicion = posiciones_estrellas[int(vector[0])]
 		var segundaPosicion = posiciones_estrellas[int(vector[1])]
@@ -182,13 +173,20 @@ func dibujar_lineas_encontradas(conexiones):
 		if !posiciones_a_brillar.has(segundaPosicion):
 			posiciones_a_brillar.append(segundaPosicion)
 		
-		linea.points = [primeraPosicion, segundaPosicion]
-		add_child(linea)
+		trazar_linea_desde_hasta_color(primeraPosicion,segundaPosicion,color_azul_2)
+
 		lineas_permanentes.append(linea)
 		
-	
 	for posicion in posiciones_a_brillar:
 		lanzar_brillitos_en(posicion)
+
+
+func trazar_linea_desde_hasta_color(start,end,color):
+	var linea = Line2D.new()
+	linea.default_color = Color(color)
+	linea.width = line_width 
+	linea.points = [start, end]
+	add_child(linea)
 
 
 func borrar_lineas_temporales_y_reiniciar_fugaz():
