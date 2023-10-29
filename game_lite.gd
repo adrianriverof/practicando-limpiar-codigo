@@ -87,8 +87,8 @@ func pause_game():
 	paused_game = false
 
 	$fugaz_timer.start()
-	$animated_camera/node/pause_button.disabled = false
-	$animated_camera/node/pause_button.visible = true
+	
+	pause_button_disabled_visible(false,true)
 
 
 func continue_playing():
@@ -97,10 +97,12 @@ func continue_playing():
 	paused_game = true
 
 	$fugaz_timer.stop()
-	$animated_camera/node/pause_button.disabled = true
-	$animated_camera/node/pause_button.visible = false
 
+	pause_button_disabled_visible(true,false)	
 
+func pause_button_disabled_visible(is_disabled, is_visible):
+	$animated_camera/node/pause_button.disabled = is_disabled
+	$animated_camera/node/pause_button.visible = is_visible
 	
 func grupo_encontrado(conexiones_encontradas):
 	
