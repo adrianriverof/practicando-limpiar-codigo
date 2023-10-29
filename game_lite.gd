@@ -103,7 +103,6 @@ func pause_button_disabled_visible(is_disabled, is_visible):
 	$animated_camera/node/pause_button.visible = is_visible
 	
 
-
 func grupo_encontrado(conexiones_encontradas):
 	
 	grupos_encontrados.append(grupo_objetivo)
@@ -161,7 +160,7 @@ func dibujar_lineas_encontradas(conexiones):
 
 	var posiciones_a_brillar = []
 	recorrer_conexiones_dibujando_lineas(conexiones, posiciones_a_brillar)
-	lanzar_brillos_en_las_estrellas_de_la_constelacion_encontrada()
+	lanzar_brillos_en_las_estrellas_de_la_constelacion_encontrada(posiciones_a_brillar)
 	
 
 
@@ -186,7 +185,7 @@ func meter_en_lista_si_no_lo_esta_ya(elemento, lista):
 	if !lista.has(elemento):
 		lista.append(elemento)
 
-func lanzar_brillos_en_las_estrellas_de_la_constelacion_encontrada():
+func lanzar_brillos_en_las_estrellas_de_la_constelacion_encontrada(posiciones_a_brillar):
 	for posicion in posiciones_a_brillar:
 		lanzar_brillitos_en(posicion)
 
@@ -414,7 +413,7 @@ func _on_Button_exit_button_down():
 
 
 func _on_Button_continue_button_down():
-	toggle_pause_buttons_visibility()
+	toggle_game_pause()
 	
 
 func _on_fugaz_timer_timeout():
@@ -459,7 +458,7 @@ func _on_view_button_button_down():
 
 
 func _on_pause_button_button_down():
-	toggle_pause_buttons_visibility()
+	toggle_game_pause()
 	
 	
 
