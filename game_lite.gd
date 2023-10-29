@@ -214,14 +214,26 @@ func comprobar_conexiones():
 	grupo_objetivo = int(str(conexiones_temporales[-1][0]).left(2))
 	
 	var conexiones_buscadas = []
-	match grupo_objetivo:
 
+	conexiones_buscadas = conexiones_buscadas_para_el_grupo(grupo_objetivo)
+	
+
+	if grupos_encontrados.has(grupo_objetivo):
+		conexiones_buscadas = []    # para que no nos la vuelva a marcar como completa
+	
+	if len(conexiones_buscadas) != 0 and verificar_lista_temporal_contiene_todos_los_vectores(conexiones_temporales, conexiones_buscadas):
+		grupo_encontrado(conexiones_buscadas)
+		
+
+func conexiones_buscadas_para_el_grupo(grupo_en_cuestion):
+	
+	var lista_salida = []
+
+	match grupo_en_cuestion:
 
 		11:
-			# PUEDO HACER UN SISTEMA AUTOMÁTICO PARA METER ESTOS VECTORES
-			# Habria que gestionarlo desde un dataset separado, despejaría 130 líneas
 
-			conexiones_buscadas = [  
+			lista_salida = [  
 			Vector2(1101, 1102),
 			Vector2(1101, 1103),
 			Vector2(1102, 1103),
@@ -229,7 +241,7 @@ func comprobar_conexiones():
 			Vector2(1104, 1105),
 		]
 		12:
-			conexiones_buscadas = [ 
+			lista_salida = [ 
 			Vector2(1201, 1202),
 			Vector2(1201, 1204),
 			Vector2(1202, 1203),
@@ -239,7 +251,7 @@ func comprobar_conexiones():
 			
 		]
 		13:
-			conexiones_buscadas = [  
+			lista_salida = [  
 			Vector2(1301, 1302),
 			Vector2(1302, 1303),
 			Vector2(1303, 1304),
@@ -248,7 +260,7 @@ func comprobar_conexiones():
 			
 		]
 		14:
-			conexiones_buscadas = [ 
+			lista_salida = [ 
 			Vector2(140, 140),
 			Vector2(1302, 1303),
 			Vector2(1303, 1304),
@@ -259,7 +271,7 @@ func comprobar_conexiones():
 		
 		#--------- 
 		21:
-			conexiones_buscadas = [
+			lista_salida = [ 
 				Vector2(2101,2102),
 				Vector2(2102,2103),
 				Vector2(2101,2103)
@@ -267,14 +279,14 @@ func comprobar_conexiones():
 		
 		#---------
 		22:
-			conexiones_buscadas = [
+			lista_salida = [
 				Vector2(2201,2202),
 				Vector2(2202,2203),
 				Vector2(2203,2204)
 			]
 		
 		23:
-			conexiones_buscadas = [
+			lista_salida = [
 				Vector2(2301,2302),
 				Vector2(2301,2303),
 				Vector2(2302,2303),
@@ -283,7 +295,7 @@ func comprobar_conexiones():
 		#---------
 		
 		31:
-			conexiones_buscadas = [
+			lista_salida = [
 				Vector2(3101,3102),
 				Vector2(3102,3103),
 				Vector2(3103,3104),
@@ -291,7 +303,7 @@ func comprobar_conexiones():
 			]
 			
 		32:
-			conexiones_buscadas = [
+			lista_salida = [
 				Vector2(3201,3202),
 				Vector2(3202,3203),
 				Vector2(3203,3204),
@@ -299,7 +311,7 @@ func comprobar_conexiones():
 			]
 			
 		33:
-			conexiones_buscadas = [
+			lista_salida = [
 				Vector2(3301,3302),
 				Vector2(3302,3303),
 				Vector2(3303,3304),
@@ -311,7 +323,7 @@ func comprobar_conexiones():
 		#---------
 		
 		41:
-			conexiones_buscadas = [
+			lista_salida = [
 				Vector2(4101,4102),
 				Vector2(4102,4103),
 				Vector2(4103,4104),
@@ -322,7 +334,7 @@ func comprobar_conexiones():
 			]
 			
 		42:
-			conexiones_buscadas = [
+			lista_salida = [
 				Vector2(4201,4202),
 				Vector2(4202,4203),
 				Vector2(4203,4204),
@@ -330,7 +342,7 @@ func comprobar_conexiones():
 			]
 		
 		43:
-			conexiones_buscadas = [
+			lista_salida = [
 				Vector2(4301,4302),
 				Vector2(4302,4303),
 				Vector2(4303,4304),
@@ -339,7 +351,7 @@ func comprobar_conexiones():
 			]
 		
 		44:
-			conexiones_buscadas = [
+			lista_salida = [
 				Vector2(4401,4402),
 				Vector2(4402,4403),
 				Vector2(4402,4404),
@@ -349,13 +361,6 @@ func comprobar_conexiones():
 				Vector2(4406,4407)
 			]
 		
-	if grupos_encontrados.has(grupo_objetivo):
-		conexiones_buscadas = []    # para que no nos la vuelva a marcar como completa
-	
-	if len(conexiones_buscadas) != 0 and verificar_lista_temporal_contiene_todos_los_vectores(conexiones_temporales, conexiones_buscadas):
-		grupo_encontrado(conexiones_buscadas)
-		
-	
 
 
 func verificar_lista_temporal_contiene_todos_los_vectores(temporal: Array, objetivo: Array) -> bool:
