@@ -139,7 +139,7 @@ func lanzar_brillitos_en_fugaz(posicion):
 func dibujar_linea(punto_fin):
 	
 	lanzar_brillitos_en(get_global_mouse_position())
-	trazar_linea_desde_hasta_color(punto_inicial_marcado, punto_fin, Color(color_marca))
+	var linea = trazar_linea_desde_hasta_color(punto_inicial_marcado, punto_fin, Color(color_marca))
 
 	lineas_temporales.append(linea)
 	conexiones_temporales.append(ordenar_menor_a_mayor(nodo_inicial_temporal,nodo_final_temporal))
@@ -160,27 +160,28 @@ func dibujar_lineas_encontradas(conexiones):
 	
 
 	var posiciones_a_brillar = []
-	recorrer_conexiones_dibujando_lineas(conexiones)
+	recorrer_conexiones_dibujando_lineas(conexiones, posiciones_a_brillar)
 	lanzar_brillos_en_las_estrellas_de_la_constelacion_encontrada()
 	
 
-func recorrer_conexiones_dibujando_lineas():
+
+
+func recorrer_conexiones_dibujando_lineas(conexiones, lista_en_que_guardar):
 	for conexion in conexiones:
 		
-		primeraPosicion, segundaPosicion = obtener_posiciones_de_las_estrellas_en_esta_conexion(conexion)
+		var primeraPosicion = posiciones_estrellas[int(conexion[0])]
+		var segundaPosicion = posiciones_estrellas[int(conexion[1])]
 		
-		meter_en_lista_si_no_lo_esta_ya(primeraPosicion, posiciones_a_brillar)
-		meter_en_lista_si_no_lo_esta_ya(segundaPosicion, posiciones_a_brillar)
+		meter_en_lista_si_no_lo_esta_ya(primeraPosicion, lista_en_que_guardar)
+		meter_en_lista_si_no_lo_esta_ya(segundaPosicion, lista_en_que_guardar)
 		
-		trazar_linea_desde_hasta_color(primeraPosicion,segundaPosicion,color_azul_2)
+		var linea = trazar_linea_desde_hasta_color(primeraPosicion,segundaPosicion,color_azul_2)
 
 		lineas_permanentes.append(linea)
 		
+
+
 	
-
-func obtener_posiciones_de_las_estrellas_en_esta_conexion():
-	return posiciones_estrellas[int(vector[0])], posiciones_estrellas[int(vector[1])]
-
 func meter_en_lista_si_no_lo_esta_ya(elemento, lista):
 	if !lista.has(elemento):
 		lista.append(elemento)
@@ -196,6 +197,7 @@ func trazar_linea_desde_hasta_color(start,end,color):
 	linea.width = line_width 
 	linea.points = [start, end]
 	add_child(linea)
+	return linea
 
 
 func borrar_lineas_temporales_y_reiniciar_fugaz():
