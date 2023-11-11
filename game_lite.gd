@@ -23,6 +23,7 @@ var nodo_final_temporal = 1000
 
 
 
+
 var lineas_temporales = []
 var lineas_permanentes = []
 
@@ -32,6 +33,7 @@ var conexiones_temporales = []
 var conexiones_a_permanente = []
 
 var grupos_encontrados = []
+var conexiones_buscadas = []
 
 var game_has_started = false
 var paused_game = true
@@ -209,21 +211,21 @@ func borrar_lineas_temporales_y_reiniciar_fugaz():
 	conexiones_temporales.clear()
 
 
+
 func comprobar_conexiones():	
 	
 	grupo_objetivo = int(str(conexiones_temporales[-1][0]).left(2))
-	
-	var conexiones_buscadas = []
-
 	conexiones_buscadas = conexiones_buscadas_para_el_grupo(grupo_objetivo)
 	
-
-	if grupos_encontrados.has(grupo_objetivo):
-		conexiones_buscadas = []    # para que no nos la vuelva a marcar como completa
+	comprobar_si_habiamos_encontrado_ya(grupo_objetivo)
 	
 	if len(conexiones_buscadas) != 0 and verificar_lista_temporal_contiene_todos_los_vectores(conexiones_temporales, conexiones_buscadas):
 		grupo_encontrado(conexiones_buscadas)
 		
+func comprobar_si_habiamos_encontrado_ya(grupo_a_comprobar):
+	if grupos_encontrados.has(grupo_a_comprobar):
+		conexiones_buscadas = []
+
 
 func conexiones_buscadas_para_el_grupo(grupo_en_cuestion):
 	
@@ -360,7 +362,7 @@ func conexiones_buscadas_para_el_grupo(grupo_en_cuestion):
 				Vector2(4405,4406),
 				Vector2(4406,4407)
 			]
-		
+	return lista_salida	
 
 
 func verificar_lista_temporal_contiene_todos_los_vectores(temporal: Array, objetivo: Array) -> bool:
@@ -410,8 +412,6 @@ func _on_Button_close_button_down():
 func cerrar_juego():
 	get_tree().quit()
 
-
-# BOTONES DE PAUSE
 
 func _on_Button_exit_button_down():
 	reiniciar_escena()
