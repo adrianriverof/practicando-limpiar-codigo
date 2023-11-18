@@ -370,16 +370,11 @@ func conexiones_buscadas_para_el_grupo(grupo_en_cuestion):
 
 
 func verificar_lista_temporal_contiene_todos_los_vectores(temporal: Array, objetivo: Array) -> bool:
-	for vector_objetivo in objetivo:
-		var contiene_vector = false
-		for vector_temporal in temporal:
-			if vector_temporal == vector_objetivo:
-				contiene_vector = true
-				conexiones_a_permanente.append(vector_objetivo)
-				break
-		if not contiene_vector:
-			return false
-	return true
+    for vector_objetivo in objetivo:
+        if not temporal.contains(vector_objetivo):
+            return false
+        conexiones_a_permanente.append(vector_objetivo)
+    return true
 
 
 func comprobar_objetivos():
