@@ -393,6 +393,39 @@ func reiniciar_escena():
 	$fugaz_timer.stop()
 	get_tree().reload_current_scene()
 
+func cerrar_juego():
+	get_tree().quit()
+
+
+
+
+
+
+func generar_estrella_fugaz():
+		
+	var fugaz = preload("res://estrella_fugaz.tscn")
+	var camera_position = get_node("animated_camera/fugaces_posiciones")
+	var fugaz_especifica = numero_aleatorio_entre_uno_y(camera_position.get_child_count())
+
+	var fugaz_instance = fugaz.instance()
+	fugaz_instance.position = camera_position.get_node(str(fugaz_especifica)).global_position
+	fugaz_instance.rotation_degrees = camera_position.get_node(str(fugaz_especifica)).rotation_degrees
+	
+	get_tree().get_root().add_child(fugaz_instance)
+
+func tocar_fugaz():
+		
+	for numero_estrella in posiciones_estrellas:
+		var grupo_de_la_estrella = int(str(numero_estrella).left(2))
+		
+		if !grupos_encontrados.has(grupo_de_la_estrella) and !grupo_de_la_estrella == 10:
+			lanzar_brillitos_en_fugaz(posiciones_estrellas[numero_estrella])
+			break
+		 
+
+
+
+
 
 func _on_Button_start_button_down():
 
@@ -408,9 +441,6 @@ func _on_Button_start_button_down():
 func _on_Button_close_button_down():
 	cerrar_juego()
 
-func cerrar_juego():
-	get_tree().quit()
-
 
 func _on_Button_exit_button_down():
 	reiniciar_escena()
@@ -425,20 +455,6 @@ func _on_fugaz_timer_timeout():
 	generar_estrella_fugaz()
 	$fugaz_timer.start()
 	GlobalSound.fugaz_appear()
-
-
-func generar_estrella_fugaz():
-		
-	var fugaz = preload("res://estrella_fugaz.tscn")
-	var camera_position = get_node("animated_camera/fugaces_posiciones")
-	var fugaz_especifica = numero_aleatorio_entre_uno_y(camera_position.get_child_count())
-
-	var fugaz_instance = fugaz.instance()
-	fugaz_instance.position = camera_position.get_node(str(fugaz_especifica)).global_position
-	fugaz_instance.rotation_degrees = camera_position.get_node(str(fugaz_especifica)).rotation_degrees
-	
-	get_tree().get_root().add_child(fugaz_instance)
-
 
 func _on_Button_toggled(button_pressed):
 	if button_pressed:
@@ -466,15 +482,6 @@ func _on_pause_button_button_down():
 	
 	
 
-func tocar_fugaz():
-		
-	for numero_estrella in posiciones_estrellas:
-		var grupo_de_la_estrella = int(str(numero_estrella).left(2))
-		
-		if !grupos_encontrados.has(grupo_de_la_estrella) and !grupo_de_la_estrella == 10:
-			lanzar_brillitos_en_fugaz(posiciones_estrellas[numero_estrella])
-			break
-		 
 	
 
 func _on_Button_start_mouse_entered():
