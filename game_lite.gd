@@ -488,13 +488,20 @@ func tocar_fugaz():
 
 		var grupo_de_la_estrella = obtener_entero_id_de_grupo_de_la_estrella(numero_estrella)
 		
-		if !grupos_encontrados.has(grupo_de_la_estrella) and !grupo_de_la_estrella == 10:
+		if grupo_no_encontrado_y_no_generico(grupo_de_la_estrella):
 			lanzar_brillitos_en_fugaz(posiciones_estrellas[numero_estrella])
 			break
 		 
 
+func grupo_no_encontrado_y_no_generico(grupo_en_cuestion):
+	return (!grupos_encontrados.has(grupo_en_cuestion) and !grupo_en_cuestion == 10)
+
+
 func obtener_entero_id_de_grupo_de_la_estrella(string_id_de_la_estrella):
 	return int(str(string_id_de_la_estrella).left(2))
+
+
+
 
 func _on_fugaz_timer_timeout():
 
