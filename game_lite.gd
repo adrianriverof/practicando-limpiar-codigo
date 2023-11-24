@@ -65,6 +65,7 @@ func _ready():
 
 #------------------------------------------------------------------------
 #------------ Zona de menús e interfaces (borraré estos comentarios y usaré clases)
+# - (muy largo, probablemente haya que agrupar más)
 #------------------------------------------------------------------------
 
 
@@ -458,6 +459,15 @@ func verificar_lista_temporal_contiene_todos_los_vectores(temporal: Array, objet
     return true
 
 
+
+
+#------------------------------------------------------------------------
+#------------ Zona de control de nivel/progreso
+#------------------------------------------------------------------------
+
+
+
+
 func comprobar_objetivos():
 	match len(grupos_encontrados): 
 		1:
@@ -478,6 +488,14 @@ func cerrar_juego():
 	get_tree().quit()
 
 
+func _on_camera_animation_animation_finished(anim_name):
+	if anim_name == "5":
+		reiniciar_escena()
+
+
+#------------------------------------------------------------------------
+#------------ Zona de estrellas fugaces
+#------------------------------------------------------------------------
 
 
 
@@ -516,26 +534,10 @@ func obtener_entero_id_de_grupo_de_la_estrella(string_id_de_la_estrella):
 
 
 
-
 func _on_fugaz_timer_timeout():
 
 	generar_estrella_fugaz()
 	
-
-
-
-func _on_camera_animation_animation_finished(anim_name):
-	if anim_name == "5":
-		reiniciar_escena()
-
-
-
-
-
-
-
-
-
 
 func iniciar_temporizador_estrella_fugaz():
 	$fugaz_timer.start()
