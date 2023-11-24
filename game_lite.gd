@@ -249,9 +249,7 @@ func trazar_linea_desde_hasta_color(start,end,color):
 	return linea
 
 
-func borrar_lineas_temporales_y_reiniciar_fugaz():
-	
-	iniciar_temporizador_estrella_fugaz()
+func borrar_lineas_temporales():
 
 	for linea in lineas_temporales:
 		linea.queue_free()
@@ -267,7 +265,8 @@ func grupo_encontrado(conexiones_encontradas):
 	
 	poner_grupo_encontrado_en_la_lista_de_encontrados()
 	reproducir_animacion_carta_encontrada()
-	borrar_lineas_temporales_y_reiniciar_fugaz()
+	borrar_lineas_temporales()
+	iniciar_temporizador_estrella_fugaz()
 	dibujar_lineas_encontradas(conexiones_encontradas)
 	comprobar_objetivos()
 	reproducir_sonido_grupo_encontrado()
