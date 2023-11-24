@@ -75,7 +75,7 @@ func toggle_game_pause():
 
 func close_menu_and_start():
 	
-	$fugaz_timer.start()
+	iniciar_temporizador_estrella_fugaz()
 	$camera_animation.play("1")
 	$menu_animation.play("menu_fade_out")
 	
@@ -87,7 +87,7 @@ func pause_game():
 
 	menu_pause.set_visible(false)
 	paused_game = false
-	$fugaz_timer.start()
+	iniciar_temporizador_estrella_fugaz()
 	
 	set_pause_button_enabled_and_visible()
 
@@ -223,14 +223,16 @@ func trazar_linea_desde_hasta_color(start,end,color):
 
 func borrar_lineas_temporales_y_reiniciar_fugaz():
 	
-	$fugaz_timer.start()
-	
+	iniciar_temporizador_estrella_fugaz()
+
 	for linea in lineas_temporales:
 		linea.queue_free()
 	lineas_temporales.clear()
 	conexiones_temporales.clear()
 
 
+func iniciar_temporizador_estrella_fugaz():
+	$fugaz_timer.start()
 
 
 func grupo_encontrado(conexiones_encontradas):
@@ -439,7 +441,7 @@ func cerrar_juego():
 
 func generar_estrella_fugaz():
 
-	$fugaz_timer.start()
+	iniciar_temporizador_estrella_fugaz()
 	GlobalSound.fugaz_appear()
 		
 	var fugaz = preload("res://estrella_fugaz.tscn")
