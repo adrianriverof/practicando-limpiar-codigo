@@ -109,18 +109,31 @@ func set_pause_button_disabled_and_invisible():
 	$animated_camera/node/pause_button.disabled = true
 	$animated_camera/node/pause_button.visible = false
 
+
+
+
+
+
+
+
+
 func grupo_encontrado(conexiones_encontradas):
 	
-	grupos_encontrados.append(grupo_objetivo)
-	
-	$card_down.play(str(grupo_objetivo))
-	
+	poner_grupo_encontrado_en_la_lista_de_encontrados()
+	reproducir_animacion_carta_encontrada()
 	borrar_lineas_temporales_y_reiniciar_fugaz()
 	dibujar_lineas_encontradas(conexiones_encontradas)
 	comprobar_objetivos()
-	
-	GlobalSound.group_found()
+	reproducir_sonido_grupo_encontrado()
 
+func poner_grupo_encontrado_en_la_lista_de_encontrados():
+	grupos_encontrados.append(grupo_objetivo)
+
+func reproducir_animacion_carta_encontrada():
+	$card_down.play(str(grupo_objetivo))
+
+func reproducir_sonido_grupo_encontrado():
+	GlobalSound.group_found()
 
 
 func lanzar_brillitos_en(posicion):
