@@ -264,12 +264,13 @@ func iniciar_temporizador_estrella_fugaz():
 func grupo_encontrado(conexiones_encontradas):
 	
 	poner_grupo_encontrado_en_la_lista_de_encontrados()
-	reproducir_animacion_carta_encontrada()
 	borrar_lineas_temporales()
 	iniciar_temporizador_estrella_fugaz()
 	dibujar_lineas_encontradas(conexiones_encontradas)
 	comprobar_objetivos()
 	reproducir_sonido_grupo_encontrado()
+	reproducir_animacion_carta_encontrada()
+
 
 func poner_grupo_encontrado_en_la_lista_de_encontrados():
 	grupos_encontrados.append(grupo_objetivo)
@@ -282,8 +283,8 @@ func reproducir_sonido_grupo_encontrado():
 
 
 func comprobar_conexiones():	
-	
-	grupo_objetivo = int(str(conexiones_temporales[-1][0]).left(2))
+
+	grupo_objetivo = obtener_entero_id_de_grupo_de_la_estrella(conexiones_temporales[-1][0])
 	conexiones_buscadas = conexiones_buscadas_para_el_grupo(grupo_objetivo)
 	
 	comprobar_si_habiamos_encontrado_ya(grupo_objetivo)
@@ -482,17 +483,18 @@ func generar_estrella_fugaz():
 	get_tree().get_root().add_child(fugaz_instance)
 
 func tocar_fugaz():
-		
+	
 	for numero_estrella in posiciones_estrellas:
-		var grupo_de_la_estrella = int(str(numero_estrella).left(2))
+
+		var grupo_de_la_estrella = obtener_entero_id_de_grupo_de_la_estrella(numero_estrella)
 		
 		if !grupos_encontrados.has(grupo_de_la_estrella) and !grupo_de_la_estrella == 10:
 			lanzar_brillitos_en_fugaz(posiciones_estrellas[numero_estrella])
 			break
 		 
 
-
-
+func obtener_entero_id_de_grupo_de_la_estrella(string_id_de_la_estrella):
+	return int(str(string_id_de_la_estrella).left(2))
 
 func _on_fugaz_timer_timeout():
 
