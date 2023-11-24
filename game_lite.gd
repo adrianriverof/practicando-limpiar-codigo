@@ -402,6 +402,9 @@ func cerrar_juego():
 
 
 func generar_estrella_fugaz():
+
+	$fugaz_timer.start()
+	GlobalSound.fugaz_appear()
 		
 	var fugaz = preload("res://estrella_fugaz.tscn")
 	var camera_position = get_node("animated_camera/fugaces_posiciones")
@@ -453,8 +456,7 @@ func _on_Button_continue_button_down():
 func _on_fugaz_timer_timeout():
 
 	generar_estrella_fugaz()
-	$fugaz_timer.start()
-	GlobalSound.fugaz_appear()
+	
 
 func _on_Button_toggled(button_pressed):
 	if button_pressed:
@@ -475,15 +477,9 @@ func _on_view_button_button_down():
 	
 	view_mode = !view_mode
 
-
-
 func _on_pause_button_button_down():
 	toggle_game_pause()
 	
-	
-
-	
-
 func _on_Button_start_mouse_entered():
 	$card_menu_animation_start.play("start")
 
