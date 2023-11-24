@@ -63,6 +63,10 @@ func _ready():
 	set_process(true)
 
 
+#------------------------------------------------------------------------
+#------------ Zona de menús e interfaces (borraré estos comentarios y usaré clases)
+#------------------------------------------------------------------------
+
 
 func _on_pause_button_button_down():
 	toggle_game_pause()
@@ -166,6 +170,10 @@ func _on_view_button_button_down():
 
 
 
+#------------------------------------------------------------------------
+#------------ Zona de brillos
+#------------------------------------------------------------------------
+
 
 func lanzar_brillitos_en(posicion):
 
@@ -183,6 +191,11 @@ func lanzar_brillitos_en_fugaz(posicion):
 	
 	get_tree().get_root().add_child(brillos_instance)
 	
+
+#------------------------------------------------------------------------
+#------------ Zona de lineas
+#------------------------------------------------------------------------
+
 
 
 func dibujar_linea(punto_fin):
@@ -210,10 +223,8 @@ func dibujar_lineas_encontradas(conexiones):
 
 	var posiciones_a_brillar = []
 	recorrer_conexiones_dibujando_lineas(conexiones, posiciones_a_brillar)
-	lanzar_brillos_en_las_estrellas_de_la_constelacion_encontrada(posiciones_a_brillar)
+	recorrer_posiciones_a_brillar_y_hacer_que_brillen(posiciones_a_brillar)
 	
-
-
 
 func recorrer_conexiones_dibujando_lineas(conexiones, lista_en_que_guardar):
 	for conexion in conexiones:
@@ -229,15 +240,15 @@ func recorrer_conexiones_dibujando_lineas(conexiones, lista_en_que_guardar):
 		lineas_permanentes.append(linea)
 		
 
+func recorrer_posiciones_a_brillar_y_hacer_que_brillen(posiciones_a_brillar):
+	for posicion in posiciones_a_brillar:
+		lanzar_brillitos_en(posicion)
+
 
 	
 func meter_en_lista_si_no_lo_esta_ya(elemento, lista):
 	if !lista.has(elemento):
 		lista.append(elemento)
-
-func lanzar_brillos_en_las_estrellas_de_la_constelacion_encontrada(posiciones_a_brillar):
-	for posicion in posiciones_a_brillar:
-		lanzar_brillitos_en(posicion)
 
 
 func trazar_linea_desde_hasta_color(start,end,color):
@@ -257,8 +268,12 @@ func borrar_lineas_temporales():
 	conexiones_temporales.clear()
 
 
-func iniciar_temporizador_estrella_fugaz():
-	$fugaz_timer.start()
+
+#------------------------------------------------------------------------
+#------------ Zona de grupos
+#------------------------------------------------------------------------
+
+
 
 
 func grupo_encontrado(conexiones_encontradas):
@@ -466,7 +481,6 @@ func cerrar_juego():
 
 
 
-
 func generar_estrella_fugaz():
 
 	iniciar_temporizador_estrella_fugaz()
@@ -510,14 +524,18 @@ func _on_fugaz_timer_timeout():
 
 
 
-
-func _on_Button_toggled(button_pressed):
-	if button_pressed:
-		$view_animation.play("on")
-	else:
-		$view_animation.play_backwards("on")
-
-
 func _on_camera_animation_animation_finished(anim_name):
 	if anim_name == "5":
 		reiniciar_escena()
+
+
+
+
+
+
+
+
+
+
+func iniciar_temporizador_estrella_fugaz():
+	$fugaz_timer.start()
