@@ -110,30 +110,33 @@ func set_pause_button_disabled_and_invisible():
 	$animated_camera/node/pause_button.visible = false
 
 
+func _on_Button_start_button_down():
 
-
-
-
-
-
-
-func grupo_encontrado(conexiones_encontradas):
+	game_has_started = true
+	close_menu_and_start()
 	
-	poner_grupo_encontrado_en_la_lista_de_encontrados()
-	reproducir_animacion_carta_encontrada()
-	borrar_lineas_temporales_y_reiniciar_fugaz()
-	dibujar_lineas_encontradas(conexiones_encontradas)
-	comprobar_objetivos()
-	reproducir_sonido_grupo_encontrado()
+	$animated_camera/node/pause_button.disabled = false
+	$animated_camera/node/pause_button.visible = true
+	
+	GlobalSound.start_sound()
 
-func poner_grupo_encontrado_en_la_lista_de_encontrados():
-	grupos_encontrados.append(grupo_objetivo)
 
-func reproducir_animacion_carta_encontrada():
-	$card_down.play(str(grupo_objetivo))
+func _on_Button_close_button_down():
+	cerrar_juego()
 
-func reproducir_sonido_grupo_encontrado():
-	GlobalSound.group_found()
+
+func _on_Button_exit_button_down():
+	reiniciar_escena()
+
+
+func _on_Button_continue_button_down():
+	toggle_game_pause()
+	
+
+
+
+
+
 
 
 func lanzar_brillitos_en(posicion):
@@ -227,6 +230,26 @@ func borrar_lineas_temporales_y_reiniciar_fugaz():
 	lineas_temporales.clear()
 	conexiones_temporales.clear()
 
+
+
+
+func grupo_encontrado(conexiones_encontradas):
+	
+	poner_grupo_encontrado_en_la_lista_de_encontrados()
+	reproducir_animacion_carta_encontrada()
+	borrar_lineas_temporales_y_reiniciar_fugaz()
+	dibujar_lineas_encontradas(conexiones_encontradas)
+	comprobar_objetivos()
+	reproducir_sonido_grupo_encontrado()
+
+func poner_grupo_encontrado_en_la_lista_de_encontrados():
+	grupos_encontrados.append(grupo_objetivo)
+
+func reproducir_animacion_carta_encontrada():
+	$card_down.play(str(grupo_objetivo))
+
+func reproducir_sonido_grupo_encontrado():
+	GlobalSound.group_found()
 
 
 func comprobar_conexiones():	
@@ -441,30 +464,6 @@ func tocar_fugaz():
 
 
 
-
-
-func _on_Button_start_button_down():
-
-	game_has_started = true
-	close_menu_and_start()
-	
-	$animated_camera/node/pause_button.disabled = false
-	$animated_camera/node/pause_button.visible = true
-	
-	GlobalSound.start_sound()
-
-
-func _on_Button_close_button_down():
-	cerrar_juego()
-
-
-func _on_Button_exit_button_down():
-	reiniciar_escena()
-
-
-func _on_Button_continue_button_down():
-	toggle_game_pause()
-	
 
 func _on_fugaz_timer_timeout():
 
