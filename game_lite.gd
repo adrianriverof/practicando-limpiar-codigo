@@ -63,6 +63,23 @@ func _ready():
 	set_process(true)
 
 
+
+func _on_pause_button_button_down():
+	toggle_game_pause()
+	
+func _on_Button_start_mouse_entered():
+	$card_menu_animation_start.play("start")
+
+func _on_Button_start_mouse_exited():
+	$card_menu_animation_start.play_backwards("start")
+
+func _on_Button_close_mouse_entered():
+	$card_menu_animation_exit.play("exit")
+
+func _on_Button_close_mouse_exited():
+	$card_menu_animation_exit.play_backwards("exit")
+
+
 func _input(event):   
 	if Input.is_action_just_pressed("esc") and game_has_started:
 		toggle_game_pause()
@@ -134,6 +151,17 @@ func _on_Button_continue_button_down():
 	
 
 
+func _on_view_button_button_down():
+	
+	GlobalSound.view_sound()
+	
+	if !view_mode:
+		$view_animation.play("on")
+		
+	else:
+		$view_animation.play_backwards("on")
+	
+	view_mode = !view_mode
 
 
 
@@ -472,39 +500,15 @@ func _on_fugaz_timer_timeout():
 	generar_estrella_fugaz()
 	
 
+
+
+
 func _on_Button_toggled(button_pressed):
 	if button_pressed:
 		$view_animation.play("on")
 	else:
 		$view_animation.play_backwards("on")
 
-
-func _on_view_button_button_down():
-	
-	GlobalSound.view_sound()
-	
-	if !view_mode:
-		$view_animation.play("on")
-		
-	else:
-		$view_animation.play_backwards("on")
-	
-	view_mode = !view_mode
-
-func _on_pause_button_button_down():
-	toggle_game_pause()
-	
-func _on_Button_start_mouse_entered():
-	$card_menu_animation_start.play("start")
-
-func _on_Button_start_mouse_exited():
-	$card_menu_animation_start.play_backwards("start")
-
-func _on_Button_close_mouse_entered():
-	$card_menu_animation_exit.play("exit")
-
-func _on_Button_close_mouse_exited():
-	$card_menu_animation_exit.play_backwards("exit")
 
 func _on_camera_animation_animation_finished(anim_name):
 	if anim_name == "5":
